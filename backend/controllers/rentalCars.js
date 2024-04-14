@@ -41,7 +41,9 @@ exports.getRentalCars = async (req, res, next) => {
   );
 
   //finding resource
-  query = RentalCar.find(JSON.parse(queryStr)).populate("appointments");
+  query = RentalCar.find(JSON.parse(queryStr))
+    .populate("rentals")
+    .populate("reviews");
 
   //Select Fields
   if (req.query.select) {
@@ -64,12 +66,12 @@ exports.getRentalCars = async (req, res, next) => {
   const endIndex = page * limit;
 
   try {
-    const total = await Hospital.countDocuments();
+    const total = await RentalCar.countDocuments();
 
     query = query.skip(startIndex).limit(limit);
 
     //Executing query
-    const hospitals = await query;
+    const rentalCars = await query;
     //Pagination result
     const pagination = {};
 
@@ -89,66 +91,70 @@ exports.getRentalCars = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      count: hospitals.length,
+      count: rentalCars.length,
       pagination,
-      data: hospitals,
+      data: rentalCars,
     });
   } catch (err) {
     res.status(200).json({ success: false });
   }
 };
 
-//@desc     Get single hospitals
-//@route    GET /api/v1/hospitals/:id
+//@desc     Get single rental cars
+//@route    GET /api/v1/rentalCars/:id
 //@access   Public
-exports.getHospital = async (req, res, next) => {
+exports.getRentalCar = async (req, res, next) => {
   try {
-    const hospital = await Hospital.findById(req.params.id);
+    const rentalCar = await RentalCar.findById(req.params.id);
 
-    if (!hospital) return res.status(400).json({ success: false });
+    if (!rentalCar) return res.status(400).json({ success: false });
 
-    res.status(200).json({ success: true, data: hospital });
+    res.status(200).json({ success: true, data: rentalCar });
   } catch (err) {
     res.status(400).json({ success: false });
   }
 };
 
-//@desc     Create new hospital
-//@route    POST /api/v1/hospitals
+//@desc     Create new rental cars
+//@route    POST /api/v1/rentalCars
 //@access   Private
-exports.createHospital = async (req, res, next) => {
-  const hospital = await Hospital.create(req.body);
-  res.status(201).json({ success: true, data: hospital });
+exports.createRentalCar = async (req, res, next) => {
+  const rentalCar = await RentalCar.create(req.body);
+  res.status(201).json({ success: true, data: rentalCar });
 };
 
-//@desc     Update hospital
-//@route    PUT /api/v1/hospitals/:id
+//@desc     Update rental car
+//@route    PUT /api/v1/rentalCars/:id
 //@access   Private
-exports.updateHospital = async (req, res, next) => {
+exports.updateRentalCar = async (req, res, next) => {
   try {
-    const hospital = await Hospital.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const rentalCar = await RentalCar.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
-    if (!hospital) {
+    if (!rentalCar) {
       return res.status(400).json({ success: false });
     }
 
-    res.status(200).json({ success: true, data: hospital });
+    res.status(200).json({ success: true, data: rentalCar });
   } catch (err) {
     res.status(400).json({ success: false });
   }
 };
 
-//@desc     Delete hospital
-//@route    DELETE /api/v1/hospitals/:id
+//@desc     Delete rental cars
+//@route    DELETE /api/v1/rentalCars/:id
 //@access   Private
-exports.deleteHospital = async (req, res, next) => {
+exports.deleteRentalCar = async (req, res, next) => {
   try {
-    const hospital = await Hospital.findById(req.params.id);
+    const rentalCar = await RentalCar.findById(req.params.id);
 
-    if (!hospital) {
+    if (!rentalCar) {
       return res.status(404).json({
         success: false,
         message: `Bootcamp not found with id of ${req.params.id}`,
@@ -157,7 +163,7 @@ exports.deleteHospital = async (req, res, next) => {
 
     //console.log(hospital);
 
-    await hospital.deleteOne();
+    await rentalCar.deleteOne();
     res.status(200).json({ success: true, data: {} });
   } catch (err) {
     res.status(400).json({ success: false });

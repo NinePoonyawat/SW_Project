@@ -71,7 +71,7 @@ app.use(cors());
 const rentalCars = require("./routes/rentalCars");
 const auth = require("./routes/auth");
 const rentals = require("./routes/rentals");
-const reviews = require("../routes/reviews");
+const reviews = require("./routes/reviews");
 app.use("/api/v1/rentalCars", rentalCars);
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/rentals", rentals);
