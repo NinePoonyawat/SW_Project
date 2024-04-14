@@ -9,7 +9,7 @@ const {
 } = require("../controllers/rentalCars");
 
 //Include other resource routers
-const rentalRouter = require("./rental");
+const rentalRouter = require("./rentals");
 
 const router = express.Router();
 const { protect, authorize } = require("../middleware/auth");
