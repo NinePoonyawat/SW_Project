@@ -279,20 +279,20 @@ const RentalCarSchema = new mongoose.Schema(
 );
 
 //Reserve populate with virtuals
-HospitalSchema.virtual("appointments", {
-  ref: "Appointment",
+RentalCarSchema.virtual("rental", {
+  ref: "Rental",
   localField: "_id",
-  foreignField: "hospital",
+  foreignField: "rentalCar",
   justOne: false,
 });
 
-//Cascade delete appointments when a hospital is deleted
+//Cascade delete rentals when a hospital is deleted
 HospitalSchema.pre(
   "deleteOne",
   { document: true, query: false },
   async function (next) {
-    console.log(`Appointments being removed from hospital ${this._id}`);
-    await this.model("Appointment").deleteMany({ hospital: this._id });
+    console.log(`Rental being removed from rental ${this._id}`);
+    await this.model("Rental").deleteMany({ rentalCar: this._id });
     next();
   }
 );
