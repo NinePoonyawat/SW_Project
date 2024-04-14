@@ -287,11 +287,11 @@ RentalCarSchema.virtual("rental", {
 });
 
 //Cascade delete rentals when a hospital is deleted
-HospitalSchema.pre(
+RentalCarSchema.pre(
   "deleteOne",
   { document: true, query: false },
   async function (next) {
-    console.log(`Rental being removed from rental ${this._id}`);
+    console.log(`Rental being removed from rental car ${this._id}`);
     await this.model("Rental").deleteMany({ rentalCar: this._id });
     next();
   }
