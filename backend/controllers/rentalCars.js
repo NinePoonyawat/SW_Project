@@ -41,9 +41,9 @@ exports.getRentalCars = async (req, res, next) => {
   );
 
   //finding resource
-  query = RentalCar.find(JSON.parse(queryStr))
-    .populate("rentals")
-    .populate("reviews");
+  query = RentalCar.find(JSON.parse(queryStr));
+  // .populate("rentals")
+  // .populate("reviews");
 
   //Select Fields
   if (req.query.select) {
@@ -96,7 +96,7 @@ exports.getRentalCars = async (req, res, next) => {
       data: rentalCars,
     });
   } catch (err) {
-    res.status(200).json({ success: false });
+    res.status(500).json({ success: false, error: err.message });
   }
 };
 
@@ -143,7 +143,7 @@ exports.updateRentalCar = async (req, res, next) => {
 
     res.status(200).json({ success: true, data: rentalCar });
   } catch (err) {
-    res.status(400).json({ success: false });
+    res.status(500).json({ success: false, error: err.message });
   }
 };
 
@@ -152,20 +152,26 @@ exports.updateRentalCar = async (req, res, next) => {
 //@access   Private
 exports.deleteRentalCar = async (req, res, next) => {
   try {
-    const rentalCar = await RentalCar.findById(req.params.id);
+    // You don't actually need to find the document first if you just want to delete it.
+    // You can directly delete the document if you have the ID.
+    const result = await RentalCar.deleteOne({ _id: req.params.id });
 
-    if (!rentalCar) {
+    if (result.deletedCount === 0) {
+      // If no documents were deleted, it means no document was found with that ID.
       return res.status(404).json({
         success: false,
-        message: `Bootcamp not found with id of ${req.params.id}`,
+        message: `No rental car found with id of ${req.params.id}`,
       });
     }
 
-    //console.log(hospital);
-
-    await rentalCar.deleteOne();
-    res.status(200).json({ success: true, data: {} });
+    // If the deletion was successful, return an appropriate response
+    res.status(200).json({
+      success: true,
+      data: {},
+      message: "Rental car deleted successfully",
+    });
   } catch (err) {
-    res.status(400).json({ success: false });
+    console.error(err); // Log the error to see what went wrong
+    res.status(500).json({ success: false, error: err.message });
   }
 };

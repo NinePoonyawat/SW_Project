@@ -5,6 +5,7 @@ var connection = mysql.createPool({
   user: "root",
   password: "12345678",
   database: "carCenter",
+  port: "3007", // only on noni device
 });
 
 module.exports = connection;
