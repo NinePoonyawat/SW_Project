@@ -78,22 +78,23 @@ exports.getRental = async (req, res, next) => {
 //@access   Private
 exports.addRental = async (req, res, next) => {
   try {
-    req.body.rentalCar = req.params.rentalCarId;
+    // req.body.rentalCar = req.params.rentalCarId;
+    console.log(req.body.rentalCarId);
 
-    const rentalCar = await RentalCar.findById(req.params.rentalCarId);
+    const rentalCar = await RentalCar.findById(req.body.rentalCarId);
 
     if (!rentalCar) {
       return res.status(404).json({
         success: false,
-        message: `No rental car with the id of ${req.params.rentalCarId}`,
+        message: `No rental car with the id of ${req.body.rentalCarId}`,
       });
     }
 
     //add user Id to req.body
     req.body.user = req.user.id;
-
+    req.body.rentalCar = rentalCar;
     //Check for existed rental
-    const existedRental = await Rental.find({ user: req.user.id });
+    const existedRental = await Rental.find({ user: req.body.user });
 
     //If the user is not an admin, they can only one rental
     if (existedRental.length >= 1 && req.user.role !== "admin") {
