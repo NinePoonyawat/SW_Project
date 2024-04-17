@@ -40,14 +40,14 @@ exports.getReview = async (req, res, next) => {
 // @route   POST /reviews
 // @access  Protected, Authorized (admin, user)
 exports.addReview = async (req, res, next) => {
-  const { rentalCar, reviewText, score } = req.body;
+  // const { rentalCar, reviewText, score } = req.body;
   const userId = req.user.id; // Assuming req.user is populated from the authentication middleware
-
+  req.body.rentalCar = req.params.rentalCarId;
   try {
     // Check if user has rented this car
     const rental = await Rental.findOne({
       user: userId,
-      rentalCar: rentalCar,
+      rentalCar: req.params.rentalCarId,
     });
 
     if (!rental) {
@@ -70,13 +70,7 @@ exports.addReview = async (req, res, next) => {
     }
 
     // Create the review
-    const review = await Review.create({
-      rentalCar,
-      user: userId,
-      reviewText,
-      score,
-      rental: rental._id, // linking the review directly to the rental
-    });
+    const review = await Review.create(req.body);
 
     res.status(201).json({
       success: true,

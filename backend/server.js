@@ -74,8 +74,9 @@ const rentals = require("./routes/rentals");
 const reviews = require("./routes/reviews");
 app.use("/api/v1/rentalCars", rentalCars);
 app.use("/api/v1/auth", auth);
-app.use("/api/v1/rentals", rentals);
-app.use("/api/v1/reviews", reviews);
+// kuay unine /-\ infinite recursive ^
+// app.use("/api/v1/rentals", rentals);
+// app.use("/api/v1/reviews", reviews);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 const PORT = process.env.PORT || 5000;

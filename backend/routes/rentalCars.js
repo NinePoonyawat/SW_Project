@@ -10,12 +10,13 @@ const {
 
 //Include other resource routers
 const rentalRouter = require("./rentals");
-
+const reviewRouter = require("./reviews");
 const router = express.Router();
 const { protect, authorize } = require("../middleware/auth");
 
 //Re-route into other resource routers
 router.use("/:rentalCarId/rentals/", rentalRouter);
+router.use("/:rentalCarId/reviews/", reviewRouter);
 
 router.route("/carCenters").get(getCarCenters);
 
