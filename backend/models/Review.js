@@ -1,18 +1,19 @@
 const mongoose = require("mongoose");
 
 const ReviewSchema = new mongoose.Schema({
-  appointment: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Appointment",
+  rentalCar: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "RentalCar",
     required: true,
   },
   reviewText: {
     type: String,
-    required: true,
+    required: [true, "Please provide a review text."],
   },
   score: {
     type: Number,
-    Range: [0, 5],
+    min: 0,
+    max: 5,
     default: 5,
   },
   createdAt: {

@@ -297,4 +297,19 @@ RentalCarSchema.pre(
   }
 );
 
+RentalCarSchema.virtual("reviews", {
+  ref: "Review",
+  localField: "_id",
+  foreignField: "rentalCar",
+});
+
+RentalCarSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function (next) {
+    console.log(`Deleting reviews associated with rental car ${this._id}`);
+    await this.model("Review").deleteMany({ rentalCar: this._id });
+    next();
+  }
+);
 module.exports = mongoose.model("RentalCar", RentalCarSchema);
