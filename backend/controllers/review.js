@@ -115,6 +115,7 @@ exports.deleteReview = async (req, res, next) => {
     if (!review) {
       return res.status(404).json({ success: false, error: "No review found" });
     }
+    console.log(review);
     await review.deleteOne({ _id: req.params.id });
     res.status(200).json({
       success: true,
