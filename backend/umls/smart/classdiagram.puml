@@ -5,26 +5,26 @@ left to right direction
 class App <<Application>> {
 }
 
-class Hotels <<Resource>> {
-  <<GET>> + getHotels() : HotelSchema
-  <<POST>> + createHotel() : HotelSchema
+class RentalCars <<Resource>> {
+  <<GET>> + getRentalCars() : RentalCarSchema
+  <<POST>> + createRentalCar() : RentalCarSchema
 }
 
-class Hotel <<Resource>> {
-  <<GET>> + getHotel(hotelId: ObjectId) : HotelSchema
-  <<PUT>> + updateHotel(hotelId: ObjectId) : HotelSchema
-  <<DELETE>> + deleteHotel(hotelId: ObjectId) : void
+class RentalCar <<Resource>> {
+  <<GET>> + getRentalCar(hotelId: ObjectId) : RentalCarSchema
+  <<PUT>> + updateRentalCar(hotelId: ObjectId) : RentalCarSchema
+  <<DELETE>> + deleteRentalCar(hotelId: ObjectId) : void
 }
 
-class Bookings <<Resource>> {
-  <<GET>> + getBookings() : BookingSchema
-  <<POST>> + createBooking() : BookingSchema
+class Rentals <<Resource>> {
+  <<GET>> + getRentals() : RentalSchema
+  <<POST>> + createRental() : RentalSchema
 }
 
-class Booking <<Resource>> {
-  <<GET>> + getBooking(bookingId: ObjectId) : BookingSchema
-  <<PUT>> + updateBooking(bookingId: ObjectId) : BookingSchema
-  <<DELETE>> + deleteBooking(bookingId: ObjectId) : void
+class Rental <<Resource>> {
+  <<GET>> + getRental(bookingId: ObjectId) : RentalSchema
+  <<PUT>> + updateRental(bookingId: ObjectId) : RentalSchema
+  <<DELETE>> + deleteRental(bookingId: ObjectId) : void
 }
 
 class Auth <<Resource>> {
@@ -34,23 +34,26 @@ class Auth <<Resource>> {
   <<GET>> + logout() : void
 }
 
-class BookingSchema <<Representation>> {
-  +_id: ObjectId
-  +bookDate: Date
-  +user: ObjectId
-  +hotel: ObjectId
-  +createdAt: Date
+class RentalCarSchema <<Representation>>{
+  + carBrand: String
+  + model: String
+  + pricePerDay: Number
+  + year: Number
+  + color: String
+  + licensePlate: String
+  + mileage: Number
+  + fuelType: String
+  + transmission: String
+  + seats: Number
+  + rented: Boolean
 }
 
-class HotelSchema <<Representation>> {
-  +_id: ObjectId
-  +name: String
-  +address: String
-  +district: String
-  +province: String
-  +postalcode: String
-  +tel: String
-  +region: String
+class RentalSchema <<Representation>>{
+  + startDate: Date
+  + endDate: Date
+  + user: ObjectId
+  + rentalCar: ObjectId
+  + createdAt: Date
 }
 
 class UserSchema <<Representation>> {
@@ -64,16 +67,16 @@ class UserSchema <<Representation>> {
   +createdAt: Date
 }
 
-App --> Hotels : /hotels <<Path>>
-App --> Bookings : /bookings <<Path>>
+App --> RentalCars : /rentalCars <<Path>>
+App --> Rentals : /rentals <<Path>>
 App --> Auth : /auth <<Path>>
 Auth --> UserSchema : uses 
-Hotels --> Hotel : /{hotelId} <<Path>>
-Hotel --> HotelSchema : uses
+RentalCars --> RentalCar : /{rentalCarId} <<Path>>
+RentalCar --> RentalCarSchema : uses
 
-Hotel --> Bookings : /bookings <<Path>>
+RentalCar --> Rentals : /bookings <<Path>>
 
-Bookings --> Booking : /{bookingId} <<Path>>
-Booking --> BookingSchema : uses
+Rentals --> Rental : /{rentalId} <<Path>>
+Rental --> RentalSchema : uses
 
 @enduml
