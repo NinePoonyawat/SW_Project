@@ -1,0 +1,21 @@
+@startuml Update Rental
+ 
+header Update Rental
+
+actor user
+participant server <<javaScript>>
+participant rentals <<router>>
+participant rentals <<controllers>>
+participant Rental <<models>>
+participant rentalsDB <<MongoDB>>
+
+user -> server : req.put('/rentals/:booking_id')
+server -> rentals : app.use("/rentals", rentals)
+rentals -> rentals : updateRental
+rentals. -> Rental : findByIdAndUpdate(req.params.id, req.body)
+Rental -> rentalsDB : RentalSchema
+rentalsDB -> Rental : updatedRental
+Rental -> rentals : updatedRental
+rentals. -> user : updatedRental
+
+@enduml

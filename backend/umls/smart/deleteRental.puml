@@ -1,0 +1,21 @@
+@startuml Delete Rental
+
+header Delete Rental
+
+actor user
+participant server <<javaScript>>
+participant rentals <<router>>
+participant rentals <<controllers>>
+participant Rental <<models>>
+participant rentalDB <<MongoDB>>
+
+user -> server : req.delete('/rentals/:booking_id)
+server -> rentals : app.use("/rentals", rentals)
+rentals -> rentals : deleteRental
+rentals -> Rental : findByIdAndDelete(req.params.id)
+Rental -> rentalDB : RentalSchema
+rentalDB -> Rental :
+Rental -> rentals :
+rentals -> user :
+
+@enduml

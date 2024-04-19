@@ -1,0 +1,25 @@
+@startuml Delete RentalCar
+
+header Admin Delete RentalCar
+
+actor user
+participant server <<javaScript>>
+participant rentalCars <<router>>
+participant rentalCars <<controllers>>
+participant RentalCar <<models>>
+participant rentalCarsDB <<MongoDB>>
+
+user -> server : req.delete('/rentalCars/:id')
+server -> rentalCars : app.use("/rentalCars", rentalCars)
+alt is Admin
+    rentalCars -> rentalCars : deleteRentalCar
+    rentalCars -> RentalCar : findByIdAndDelete(req.params.id)
+    RentalCar -> rentalCarsDB : findOneAndDelete
+    rentalCarsDB -> RentalCar :
+    RentalCar -> rentalCars :
+    rentalCars -> user :
+else is not Admin
+    rentalCars -> user : not authorized to access this route
+end
+
+@enduml

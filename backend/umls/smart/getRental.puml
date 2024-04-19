@@ -1,0 +1,21 @@
+@startuml Get Rentals
+
+header Get Rentals
+
+actor user
+participant server <<javaScript>>
+participant rentals <<router>>
+participant rentals <<controllers>>
+participant Rentals <<models>>
+participant rentalCarsDB <<MongoDB>>
+
+user -> server : req.get('/rentals')
+server -> rentals : app.use("/rentals", rentals)
+rentals -> rentals : getRentals
+rentals -> Rentals : query
+Rentals -> rentalCarsDB : RentalsSchema
+rentalCarsDB -> Rentals : rentals
+Rentals -> rentals. : rentals
+rentals -> user : rentals
+
+@enduml

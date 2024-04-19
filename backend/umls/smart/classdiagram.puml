@@ -11,9 +11,9 @@ class RentalCars <<Resource>> {
 }
 
 class RentalCar <<Resource>> {
-  <<GET>> + getRentalCar(hotelId: ObjectId) : RentalCarSchema
-  <<PUT>> + updateRentalCar(hotelId: ObjectId) : RentalCarSchema
-  <<DELETE>> + deleteRentalCar(hotelId: ObjectId) : void
+  <<GET>> + getRentalCar(carId: ObjectId) : RentalCarSchema
+  <<PUT>> + updateRentalCar(carId: ObjectId) : RentalCarSchema
+  <<DELETE>> + deleteRentalCar(carId: ObjectId) : void
 }
 
 class Rentals <<Resource>> {

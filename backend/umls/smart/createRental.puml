@@ -1,0 +1,21 @@
+@startuml Crate Rental
+
+header Add Rental
+
+actor user
+participant server <<javaScript>>
+participant rentals <<router>>
+participant rentals <<controllers>>
+participant Rental <<models>>
+participant rentalDB <<MongoDB>>
+
+user -> server : req.post('/:rentalCarId/rentals')
+server -> rentals : app.use("/rentals", rentals)
+rentals -> rentals : addRental
+rentals -> Rental : create(req.body)
+Rental -> rentalDB : RentalSchema
+rentalDB -> Rental : newRental
+Rental -> rentals : newRental
+rentals -> user : newRental
+
+@enduml
