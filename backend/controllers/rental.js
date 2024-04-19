@@ -94,11 +94,11 @@ exports.addRental = async (req, res, next) => {
     req.body.user = req.user.id;
     // req.body.rentalCar = req.params.rentalCarId;
     //Check for existed rental
-    const existedRental = await Rental.find(req.body); //{ user: req.body.user });
-
+    const existedRental = await Rental.find({ user: req.body.user }); //);
+    console.log(existedRental);
     //If the user is not an admin, they can only one rental
-    if (existedRental.length > 3 && req.user.role !== "admin") {
-      return res.status(404).json({
+    if (existedRental.length >= 3 && req.user.role !== "admin") {
+      return res.status(400).json({
         success: false,
         message: `The user with id ${req.user.id} has already made rental`,
       });

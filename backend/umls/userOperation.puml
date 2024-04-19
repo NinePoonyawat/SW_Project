@@ -1,0 +1,23 @@
+@startuml
+actor User
+entity "System" as System
+database "BookingDB" as BookingDB
+
+' Viewing Own Booking
+User -> System : viewOwnBooking(userId)
+System -> BookingDB : fetchUserBookings(userId)
+BookingDB -> System : returnBookings()
+System -> User : displayBookings()
+
+' Editing Own Booking
+User -> System : editOwnBooking(bookingId, newDetails)
+System -> BookingDB : updateBooking(bookingId, newDetails)
+BookingDB -> System : bookingUpdated()
+System -> User : updateSuccess()
+
+' Deleting Own Booking
+User -> System : deleteOwnBooking(bookingId)
+System -> BookingDB : deleteBooking(bookingId)
+BookingDB -> System : bookingDeleted()
+System -> User : deletionSuccess()
+@enduml

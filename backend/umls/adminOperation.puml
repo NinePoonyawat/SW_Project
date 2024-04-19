@@ -1,0 +1,34 @@
+@startuml
+actor Admin
+entity "System" as System
+database "BookingDB" as BookingDB
+
+' Admin Login
+Admin -> System : login(adminCredentials)
+System -> BookingDB : validateAdminCredentials(adminCredentials)
+alt Credentials Valid
+    BookingDB -> System : validationSuccess()
+    System -> Admin : loginSuccess()
+else Invalid Credentials
+    BookingDB -> System : validationFailure()
+    System -> Admin : loginFailure("Invalid credentials")
+end
+
+' Viewing Any Booking
+Admin -> System : viewAnyBooking()
+System -> BookingDB : fetchAllBookings()
+BookingDB -> System : returnAllBookings()
+System -> Admin : displayAllBookings()
+
+' Editing Any Booking
+Admin -> System : editAnyBooking(bookingId, newDetails)
+System -> BookingDB : updateBooking(bookingId, newDetails)
+BookingDB -> System : bookingUpdated()
+System -> Admin : updateSuccess()
+
+' Deleting Any Booking
+Admin -> System : deleteAnyBooking(bookingId)
+System -> BookingDB : deleteBooking(bookingId)
+BookingDB -> System : bookingDeleted()
+System -> Admin : deletionSuccess()
+@enduml

@@ -1,0 +1,10 @@
+@startuml
+actor User
+entity "System" as System
+database "ProductDB" as ProductDB
+
+User -> System : viewProduct(productId)
+System -> ProductDB : fetchProduct(productId)
+ProductDB -> System : returnProductDetails()
+System -> User : displayProductDetails()
+@enduml

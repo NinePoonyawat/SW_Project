@@ -1,0 +1,25 @@
+@startuml
+actor User
+entity "System" as System
+database "BookingDB" as BookingDB
+database "CarProviderDB" as CarProviderDB
+
+User -> System : requestBooking(bookingDetails)
+System -> BookingDB : checkUserBookings(userId)
+alt Less than 3 Bookings
+    BookingDB -> System : bookingsCount(n)
+    System -> CarProviderDB : checkAvailability(carId, date)
+    alt Car Available
+        CarProviderDB -> System : carAvailable()
+        System -> BookingDB : createBooking(userId, carId, date, providerId)
+        BookingDB -> System : bookingCreated()
+        System -> User : bookingSuccess()
+    else Car Not Available
+        CarProviderDB -> System : carUnavailable()
+        System -> User : bookingFailure("Car not available on selected date")
+    end
+else Too Many Bookings
+    BookingDB -> System : tooManyBookings()
+    System -> User : bookingFailure("Max 3 bookings allowed")
+end
+@enduml

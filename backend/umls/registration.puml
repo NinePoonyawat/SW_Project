@@ -1,0 +1,17 @@
+@startuml
+actor User
+entity "System" as System
+database "UserDB" as UserDB
+
+User -> System : register(credentials)
+System -> UserDB : checkExistingUser(credentials)
+alt User Exists
+    UserDB -> System : userExists()
+    System -> User : registrationFailed("User already exists")
+else Valid Registration
+    UserDB -> System : noConflict()
+    System -> UserDB : createUser(credentials)
+    UserDB -> System : userCreated()
+    System -> User : registrationSuccess()
+end
+@enduml

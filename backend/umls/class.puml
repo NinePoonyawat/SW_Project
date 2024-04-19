@@ -1,0 +1,39 @@
+@startuml
+
+class RentalCar {
+    carBrand: String
+    model: String
+    pricePerDay: Number
+    year: Number
+    color: String
+    licensePlate: String
+    mileage: Number
+    fuelType: String
+    transmission: String
+    seats: Number
+    rented: Boolean
+    -- 
+    +deleteRental()
+}
+
+class Review {
+    rentalCar: ObjectId
+    reviewText: String
+    score: Number
+    createdAt: Date
+}
+
+class Rental {
+    startDate: Date
+    endDate: Date
+    user: ObjectId
+    rentalCar: ObjectId
+    createdAt: Date
+}
+
+RentalCar "1" -- "*" Review : contains >
+RentalCar "1" -- "*" Rental : contains >
+Review "1" -- "1" RentalCar : reviews >
+Rental "1" -- "1" RentalCar : rental >
+
+@enduml

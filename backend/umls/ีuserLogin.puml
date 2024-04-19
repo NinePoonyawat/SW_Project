@@ -1,0 +1,15 @@
+@startuml
+actor User
+entity "System" as System
+database "UserDB" as UserDB
+
+User -> System : login(username, password)
+System -> UserDB : validateCredentials(username, password)
+alt Credentials Valid
+    UserDB -> System : validationSuccess()
+    System -> User : loginSuccess()
+else Invalid Credentials
+    UserDB -> System : validationFailure()
+    System -> User : loginFailure("Invalid username or password")
+end
+@enduml
