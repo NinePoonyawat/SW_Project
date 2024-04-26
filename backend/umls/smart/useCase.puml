@@ -1,0 +1,48 @@
+@startuml Co-Working Space Web App Use Case Diagram
+left to right direction
+title Hotel Booking System
+
+rectangle "System" as System {
+    usecase "Register" as Reg
+    usecase "Login" as Login
+    usecase "Logout" as Logout
+    usecase "Get Car" as GetCar
+    usecase "Get Rental" as GetRental
+    usecase "Get Review" as GetReview
+    usecase "Create Car" as CreateCar
+    usecase "Create Rental" as CreateRental
+    usecase "Create Review" as CreateReview
+    usecase "Update Car" as UpdateCar
+    usecase "Update Rental" as UpdateRental
+    usecase "Update Review" as UpdateReview
+    usecase "Delete Car" as DeleteCar
+    usecase "Delete Rental" as DeleteRental
+    usecase "Delete Review" as DeleteReview
+    usecase "Administrate Reservations\n(view all, modify, delete)" as UC12
+}
+
+actor "User" as user
+user -- Reg
+user -- Login
+user -- Logout
+user -- GetCar
+user -- GetRental
+user -- CreateRental
+user -- UpdateRental
+user -- DeleteRental
+user -- GetReview
+user -- CreateReview
+user -- UpdateReview
+
+actor "Admin" as admin
+Reg -- admin 
+Login -- admin 
+Logout -- admin
+CreateCar -- admin
+UpdateCar -- admin
+DeleteCar -- admin
+DeleteReview -- admin
+
+Reg .> Login : include
+
+@enduml
